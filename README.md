@@ -2,12 +2,13 @@
 So there's like, a lot of stuff to install/import
 
 ## Libraries to install (at least what I had to do)
-So the following libraries to install (using "pip install <name>" in terminal)
+So the following libraries to install (using "pip install 'name'" in terminal)
 - python-dotenv
 - langchain
 - SpeechRecognition
 - pyttsx3
 - py3-tts (came across an error, had to do this to get tts working)
+If the command 'pip' is not found, use pip3 instead.
 
 ## If it still doesn't work even though you installed it
 Now for some reason even though I've install this stuff on my mac it doesn't work in vscode so what I had to do was:
