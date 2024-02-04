@@ -2,22 +2,21 @@
 So there's like, a lot of stuff to install/import
 
 ## Libraries to install (at least what I had to do)
-So the following libraries to install (using "pip install 'name'" in terminal)
+So the following libraries to install (using "pip install 'name'" in terminal) (assuming you are using macOS)
 - python-dotenv
 - langchain
+- langchain-core
+- langchain-community
 - SpeechRecognition
 - pyttsx3
 - py3-tts (came across an error, had to do this to get tts working)
 If the command 'pip' is not found, use pip3 instead.
 
-## If it still doesn't work even though you installed it
-Now for some reason even though I've install this stuff on my mac it doesn't work in vscode so what I had to do was:
-- Go into vscode
-- Create a virtual environment (cmd + shift + p)
-- Select .venv
-- Select days_1_2_requirements.txt
-- Any warnings should go away
-Keep in mind that this only works in vscode, this does NOT work in IDLE. Maybe my macbook libraries are just screwed up, so someone else test the first option to see if it works.
+## To run the code:
+- Open terminal
+- Go to the folder directory for the coursework
+- Run the following command: "python main.py"
+- If the program asks for permission to use your microphone, accept it.
 
 ## env files
 So at the moment once you've opened up the folder, create a new text file called "env", and inside it, you'll put an API key inside that.
