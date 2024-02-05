@@ -19,6 +19,7 @@ If the command 'pip' is not found, use pip3 instead.
 - If the program asks for permission to use your microphone, accept it.
 
 ## env files
-So at the moment once you've opened up the folder, create a new text file called "env", and inside it, you'll put an API key inside that.
+~~So at the moment once you've opened up the folder, create a new text file called "env", and inside it, you'll put an API key inside that.
 Copy paste the following: OPENAI_API_KEY=""
-Inside those quotation marks is where you'll put the API key. Since OpenAI is watching us, when we get the API key we'll strictly keep it confidential (write it down on paper and hold onto that paper for you life?)
+Inside those quotation marks is where you'll put the API key. Since OpenAI is watching us, when we get the API key we'll strictly keep it confidential (write it down on paper and hold onto that paper for you life?)~~
+UPDATE: We got an API key, will share it somewhere else confidentially. Maybe encode (in binary? hex?) and decode it or something to make the process easier for the end user.
