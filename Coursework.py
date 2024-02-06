@@ -65,7 +65,7 @@ else: # learning/quiz mode + validation checks
         else:
             break
         
-    print('MichaelBot: Hi I am Michael Bot and I will be facilitating your learning session today.')
+    print('\nMichaelBot: Hi I am Michael Bot and I will be facilitating your learning session today.')
     print(" ")
     
     templist = thelistoflanguages.copy()
