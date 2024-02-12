@@ -10,7 +10,9 @@ So the following libraries to install (using "pip install 'name'" in terminal) (
 - SpeechRecognition
 - pyttsx3
 - py3-tts (came across an error, had to do this to get tts working)
+- streamlit
 If the command 'pip' is not found, use pip3 instead.
+
 
 ## To run the code:
 - Open terminal
