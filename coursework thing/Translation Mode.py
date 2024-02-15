@@ -1,5 +1,5 @@
-import TranslationFunctions
-import time
+import TranslationFunctions # (Michael) Our original coursework was going to be written into what is now TranslationFunctions.py, but for the ease of readability and organisation, the frontend has been coded in a separate file, and the original Coursework file has been reduced to imported modules and functions, which will be called from this file.
+# (Michael) Our original input scheme prompted the user to enter "EN", "CN", "FR", "ES" as a short string for ease of input. Since migrating to Streamlit made that design choice redundant, I have created a dictionary to convert the new selection box inputs into the old "language codes" for backwards compatibility with TranslationFunctions.py
 codeconversion = {
     'English 🇬🇧': "EN",
     'Chinese 🇨🇳': "CN",
@@ -7,6 +7,7 @@ codeconversion = {
     'Spanish 🇪🇸': "ES"
 }
 
+# (Yi Kai) Import Streamlit and creating titles for UI
 import streamlit as st
 st.set_page_config(
     page_title = "MultiLingo",
