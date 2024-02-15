@@ -1,6 +1,4 @@
-import pyautogui
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
 import time
 import random
 
@@ -47,7 +45,7 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.bt_clkd = ""
     st.session_state.playerxp = 0
     st.session_state.correctcounter = 0
-    st.session_state.wrongcounter = 0
+    st.session_state.wrongquestionlist = []
         
 def callback():
     if st.session_state.ButtonActivated2 == False:
@@ -135,14 +133,33 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
             
             if multiplechoice1 == thelistoflanguages[st.session_state.questionlist[0]][0]:
                 st.session_state.correctcounter += 1
-            elif multiplechoice2 == thelistoflanguages[st.session_state.questionlist[1]][0]:
+                st.session_state.playerxp += 15
+            else:
+                st.session_state.wrongquestionlist.append(st.session_state.questionlist[0])
+                
+            if multiplechoice2 == thelistoflanguages[st.session_state.questionlist[1]][0]:
                 st.session_state.correctcounter += 1
-            elif multiplechoice3 == thelistoflanguages[st.session_state.questionlist[2]][0]:
+                st.session_state.playerxp += 15
+            else:
+                st.session_state.wrongquestionlist.append(st.session_state.questionlist[1])
+
+            if multiplechoice3 == thelistoflanguages[st.session_state.questionlist[2]][0]:
                 st.session_state.correctcounter += 1
-            elif multiplechoice4 == thelistoflanguages[st.session_state.questionlist[3]][0]:
+                st.session_state.playerxp += 15
+            else:
+                st.session_state.wrongquestionlist.append(st.session_state.questionlist[2])
+
+            if multiplechoice4 == thelistoflanguages[st.session_state.questionlist[3]][0]:
                 st.session_state.correctcounter += 1
-            elif multiplechoice5 == thelistoflanguages[st.session_state.questionlist[4]][0]:
+                st.session_state.playerxp += 15
+            else:
+                st.session_state.wrongquestionlist.append(st.session_state.questionlist[3])
+
+            if multiplechoice5 == thelistoflanguages[st.session_state.questionlist[4]][0]:
                 st.session_state.correctcounter += 1
+                st.session_state.playerxp += 15
+            else:
+                st.session_state.wrongquestionlist.append(st.session_state.questionlist[4])
 
             choiceContainer1.empty()
             choiceContainer2.empty()
@@ -150,9 +167,13 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
             choiceContainer4.empty()
             choiceContainer5.empty()
 
-            st.write("You scored " + str(st.session_state.correctcounter) + "/5")
+            st.write("You scored " + str(st.session_state.correctcounter) + "/5 and currently have " + str(st.session_state.playerxp) + "XP in total")
+            st.write("You got these questions wrong")
+            for wrongqnsindex in st.session_state.wrongquestionlist:
+                st.write(thelistoflanguages[wrongqnsindex][int(lm)] + " = " + thelistoflanguages[wrongqnsindex][0])
             if st.session_state.correctcounter == 5:
                 st.balloons()
+
             if st.button("Restart"):
                 st.session_state.ButtonActivated = False
                 st.session_state.QuizStartActivated = False
@@ -161,8 +182,6 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
                 st.session_state.Options = []
                 st.session_state.questionlist = []
                 st.session_state.bt_clkd = ""
-                st.session_state.playerxp = 0
                 st.session_state.correctcounter = 0
                 st.session_state.wrongcounter = 0
                 st.rerun()
-                # pyautogui.hotkey("command", "r")
