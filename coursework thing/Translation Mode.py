@@ -19,13 +19,15 @@ st.sidebar.write("Translate from language to language.")
 st.title("MultiLingo")
 st.write("Breaking the barriers for language.") 
 
+# (Michael) Session state variable to prevent further interaction with the "text translate
 if 'texttranslationrunning' not in st.session_state:
     st.session_state.texttranslationrunning = False
-if 'texttranslatebutton' in st.session_state and st.session_state.texttranslatebutton == True: # these are session state things, treat them as variables that update in real time with button click
-    st.session_state.texttranslationrunning = True # They will be used for the following slowbutton to prevent input while the function is running
+if 'texttranslatebutton' in st.session_state and st.session_state.texttranslatebutton == True: 
+    st.session_state.texttranslationrunning = True 
 else:
     st.session_state.texttranslationrunning = False
 
+# (Yi Kai)
 trf = st.selectbox('Translate From',
                          ('English 🇬🇧', 'Chinese 🇨🇳', 'French 🇫🇷', 'Spanish 🇪🇸'), placeholder="Choose a language")
 
