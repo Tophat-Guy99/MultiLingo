@@ -1,5 +1,9 @@
+import pyautogui
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 import time
+import random
+
 thelistoflanguages = [
     ['hello', 'bonjour', '你好', 'hola'],
     ['how are you?', 'comment ça va?', '你好吗？', '¿cómo estás?'],
@@ -18,7 +22,6 @@ languagenumberreference = {
     'Chinese 🇨🇳': 2,
     'Spanish 🇪🇸': 3
 }
-
 import random
 import string
 
@@ -29,46 +32,137 @@ st.set_page_config(
     page_title = "TriLingo",
     page_icon = "🗣️",
 )
-if "LearnButtonActivated" not in st.session_state:
-    st.session_state.LearnButtonActivated = False
 
-if 'StartButton' in st.session_state and st.session_state.StartButton == True: # these are session state things, treat them as variables that update in real time with button click
-    st.session_state.LearnButtonActivated = True # They will be used for the following slowbutton to prevent input while the function is running
-else:
-    st.session_state.LearnButtonActivated = False
+if "ButtonActivated" not in st.session_state:
+    st.session_state.ButtonActivated = False
+    st.session_state.QuizStartActivated = False
+    st.session_state.QuizEndActivated = False
+
+    st.session_state.ButtonActivated2 = False
+    st.session_state.QuizStartActivated2 = False
+    st.session_state.QuizEndActivated2 = False
+
+    st.session_state.Options = []
+    st.session_state.questionlist = []
+    st.session_state.bt_clkd = ""
+    st.session_state.playerxp = 0
+    st.session_state.correctcounter = 0
+    st.session_state.wrongcounter = 0
+        
+def callback():
+    if st.session_state.ButtonActivated2 == False:
+        st.session_state.ButtonActivated2 = True
+    elif st.session_state.QuizStartActivated2 == False:
+        st.session_state.QuizStartActivated2 = True
+    elif st.session_state.QuizEndActivated2 == False:
+        st.session_state.QuizEndActivated2 = True
 
 st.sidebar.header("Learner Mode") 
 st.sidebar.write("Learn The Language.")
 st.title("Learner Mode")
 st.write("learn The Language!") 
 lf = st.selectbox('What language do you want to learn today?',
-                         ('French 🇫🇷', 'Chinese 🇨🇳', 'Spanish 🇪🇸'), disabled=st.session_state.LearnButtonActivated)
+                         ('French 🇫🇷', 'Chinese 🇨🇳', 'Spanish 🇪🇸'), disabled=st.session_state.ButtonActivated)
 lm = languagenumberreference[lf]
+  
+if (st.button("Start Learning", on_click = callback, disabled = st.session_state.ButtonActivated) or st.session_state.ButtonActivated):
 
-if st.button("Start Learning", disabled=st.session_state.LearnButtonActivated, key='StartButton'):
-    st.session_state.LearnButtonActivated = True
-    playerxp = 0
-    correctcounter = 0
-    wrongcounter = 0
-    
-    samplerange = list(range(0, len(thelistoflanguages)))
-    questionlist = random.sample(samplerange, 5)
-    for i in range(5):
-        st.write(thelistoflanguages[questionlist[i]][int(lm)] + ": " + thelistoflanguages[questionlist[i]][0])
-    quizbutton = st.button("Start Quiz")
+    if not st.session_state.ButtonActivated:
+        st.session_state.ButtonActivated = True
 
-    if quizbutton == True:
-        print("Button pressed")
-        st.button("Click me")
-        questionListIndexes = [0]
-        questionRange = list(range(5))
-        questionRange.remove(0)
-        random.shuffle(questionRange)
-        questionListIndexes.append(questionRange[0])
-        questionListIndexes.append(questionRange[1])
-        multiplechoice = st.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[questionlist[0]][int(lm)], # This is the question parameter, takes in a string
-            random.shuffle(questionListIndexes) #Use a list of strings for each option. (SIDENOTE: MARKUP TEXT WORKS FOR THE STRINGS, YOU CAN USE BOLD AND ITALICS AND ETC)
+        samplerange = list(range(0, len(thelistoflanguages)))
+        st.session_state.questionlist = random.sample(samplerange, 5)
+        for i in range(5):
+            st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
+        st.rerun()
+    if (st.button("Start Quiz", on_click = callback, disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
+        
+        if not st.session_state.QuizStartActivated:
+            st.session_state.QuizStartActivated = True
+
+            random.shuffle(st.session_state.questionlist)
+            questionListIndexes = [0]
+            questionRange = list(range(5))
+            questionRange.remove(0)
+            random.shuffle(questionRange)
+            questionListIndexes.append(questionRange[0])
+            questionListIndexes.append(questionRange[1])
+
+            for qnsIndex in st.session_state.questionlist:
+                st.session_state.Options.append(thelistoflanguages[qnsIndex][0])
+            st.rerun()
+            
+        choiceContainer1 = st.empty()
+        choiceContainer2 = st.empty()
+        choiceContainer3 = st.empty()
+        choiceContainer4 = st.empty()
+        choiceContainer5 = st.empty()
+
+        multiplechoice1 = choiceContainer1.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[0]][int(lm)], # This is the question parameter, takes in a string
+            st.session_state.Options,
+            key='rdkey1',
+            index = 0,
         )
-        time.sleep(5)
-        st.button("YOU B")
+        multiplechoice2 = choiceContainer2.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[1]][int(lm)], # This is the question parameter, takes in a string
+            st.session_state.Options,
+            key='rdkey2',
+            index = 0,
+        )
+        multiplechoice3 = choiceContainer3.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[2]][int(lm)], # This is the question parameter, takes in a string
+            st.session_state.Options,
+            key='rdkey3',
+            index = 0,
+        )
+        multiplechoice4 = choiceContainer4.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[3]][int(lm)], # This is the question parameter, takes in a string
+            st.session_state.Options,
+            key='rdkey4',
+            index = 0,
+        )
+        multiplechoice5 = choiceContainer5.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[4]][int(lm)], # This is the question parameter, takes in a string
+            st.session_state.Options,
+            key ='rdkey5',
+            index = 0,
+        )
+        if (st.button('Submit', on_click = callback, disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
+            if not st.session_state.QuizEndActivated:
+                st.session_state.QuizEndActivated = True
+                st.rerun()
+            
+            if multiplechoice1 == thelistoflanguages[st.session_state.questionlist[0]][0]:
+                st.session_state.correctcounter += 1
+            elif multiplechoice2 == thelistoflanguages[st.session_state.questionlist[1]][0]:
+                st.session_state.correctcounter += 1
+            elif multiplechoice3 == thelistoflanguages[st.session_state.questionlist[2]][0]:
+                st.session_state.correctcounter += 1
+            elif multiplechoice4 == thelistoflanguages[st.session_state.questionlist[3]][0]:
+                st.session_state.correctcounter += 1
+            elif multiplechoice5 == thelistoflanguages[st.session_state.questionlist[4]][0]:
+                st.session_state.correctcounter += 1
+
+            choiceContainer1.empty()
+            choiceContainer2.empty()
+            choiceContainer3.empty()
+            choiceContainer4.empty()
+            choiceContainer5.empty()
+
+            st.write("You scored " + str(st.session_state.correctcounter) + "/5")
+            if st.session_state.correctcounter == 5:
+                st.balloons()
+            if st.button("Restart"):
+                st.session_state.ButtonActivated = False
+                st.session_state.QuizStartActivated = False
+                st.session_state.QuizEndActivated = False
+
+                st.session_state.Options = []
+                st.session_state.questionlist = []
+                st.session_state.bt_clkd = ""
+                st.session_state.playerxp = 0
+                st.session_state.correctcounter = 0
+                st.session_state.wrongcounter = 0
+                st.rerun()
+                # pyautogui.hotkey("command", "r")
