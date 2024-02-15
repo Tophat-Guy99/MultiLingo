@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 thelistoflanguages = [
     ['hello', 'bonjour', '你好', 'hola'],
     ['how are you?', 'comment ça va?', '你好吗？', '¿cómo estás?'],
@@ -55,3 +56,19 @@ if st.button("Start Learning", disabled=st.session_state.LearnButtonActivated, k
     for i in range(5):
         st.write(thelistoflanguages[questionlist[i]][int(lm)] + ": " + thelistoflanguages[questionlist[i]][0])
     quizbutton = st.button("Start Quiz")
+
+    if quizbutton == True:
+        print("Button pressed")
+        st.button("Click me")
+        questionListIndexes = [0]
+        questionRange = list(range(5))
+        questionRange.remove(0)
+        random.shuffle(questionRange)
+        questionListIndexes.append(questionRange[0])
+        questionListIndexes.append(questionRange[1])
+        multiplechoice = st.radio( # This is basically the "multiple choice selection" contruct
+            "What does this mean? "+ thelistoflanguages[questionlist[0]][int(lm)], # This is the question parameter, takes in a string
+            random.shuffle(questionListIndexes) #Use a list of strings for each option. (SIDENOTE: MARKUP TEXT WORKS FOR THE STRINGS, YOU CAN USE BOLD AND ITALICS AND ETC)
+        )
+        time.sleep(5)
+        st.button("YOU B")
