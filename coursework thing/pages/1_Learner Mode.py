@@ -36,10 +36,6 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.QuizStartActivated = False
     st.session_state.QuizEndActivated = False
 
-    st.session_state.ButtonActivated2 = False
-    st.session_state.QuizStartActivated2 = False
-    st.session_state.QuizEndActivated2 = False
-
     st.session_state.Options = []
     st.session_state.questionlist = []
     st.session_state.bt_clkd = ""
@@ -183,5 +179,5 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
                 st.session_state.questionlist = []
                 st.session_state.bt_clkd = ""
                 st.session_state.correctcounter = 0
-                st.session_state.wrongcounter = 0
+                st.session_state.wrongquestionlist = []
                 st.rerun()
