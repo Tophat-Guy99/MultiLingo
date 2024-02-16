@@ -35,6 +35,7 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.ButtonActivated = False
     st.session_state.QuizStartActivated = False
     st.session_state.QuizEndActivated = False
+    st.session_state.counter = 0
 
     st.session_state.Options = []
     st.session_state.questionlist = []
@@ -51,19 +52,28 @@ lf = st.selectbox('What language do you want to learn today?',
                          ('French 🇫🇷', 'Chinese 🇨🇳', 'Spanish 🇪🇸'), disabled=st.session_state.ButtonActivated)
 lm = languagenumberreference[lf]
   
-if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or st.session_state.ButtonActivated):
+if st.session_state.get("StartLearnButton", False):
+    st.session_state.disabled = False
+elif st.session_state.get("but_b", False):
+    st.session_state.disabled = True
 
-    if not st.session_state.ButtonActivated:
-        st.session_state.ButtonActivated = True
-        samplerange = list(range(0, len(thelistoflanguages)))
-        st.session_state.questionlist = random.sample(samplerange, 5)
+if (st.button("Start Learning", key = "StartLearnButton", disabled = st.session_state.get("disabled", False)) or st.session_state.ButtonActivated):
 
-        for i in range(5):
-            st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
-
+    if st.session_state.counter == 0:
+        st.session_state.counter = 1
         st.rerun()
 
-    if (st.button("Start Quiz", disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
+    if not st.session_state.ButtonActivated:
+            if st.session_state.counter == 1:
+                st.session_state.ButtonActivated = True
+                samplerange = list(range(0, len(thelistoflanguages)))
+                st.session_state.questionlist = random.sample(samplerange, 5)
+                for i in range(5):
+                    st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
+
+
+
+    if (st.button("Start Quiz", disabled = st.session_state.QuizStartActivated) or st.session_state.QuizStartActivated):
         
         if not st.session_state.QuizStartActivated:
             st.session_state.QuizStartActivated = True
