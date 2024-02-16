@@ -19,7 +19,6 @@ languagenumberreference = {
     'Chinese 🇨🇳': 2,
     'Spanish 🇪🇸': 3
 }
-import random
 
 st.set_page_config(
     page_title = "MultiLingo",
@@ -33,6 +32,7 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.counter = 0
 
     st.session_state.Options = []
+    st.session_state.containers = []
     st.session_state.questionlist = []
     st.session_state.correctcounter = 0
     st.session_state.wrongquestionlist = []
@@ -83,89 +83,50 @@ if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or 
             random.shuffle(st.session_state.Options)
             st.rerun()
             
-        choiceContainer1 = st.empty()
-        choiceContainer2 = st.empty()
-        choiceContainer3 = st.empty()
-        choiceContainer4 = st.empty()
-        choiceContainer5 = st.empty()
-        multiplechoice1 = choiceContainer1.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[0]][int(lm)], # This is the question parameter, takes in a string
-            st.session_state.Options,
-            key='rdkey1',
-            index = 0,
-        )
-        multiplechoice2 = choiceContainer2.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[1]][int(lm)], # This is the question parameter, takes in a string
-            st.session_state.Options,
-            key='rdkey2',
-            index = 0,
-        )
-        multiplechoice3 = choiceContainer3.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[2]][int(lm)], # This is the question parameter, takes in a string
-            st.session_state.Options,
-            key='rdkey3',
-            index = 0,
-        )
-        multiplechoice4 = choiceContainer4.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[3]][int(lm)], # This is the question parameter, takes in a string
-            st.session_state.Options,
-            key='rdkey4',
-            index = 0,
-        )
-        multiplechoice5 = choiceContainer5.radio( # This is basically the "multiple choice selection" contruct
-            "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[4]][int(lm)], # This is the question parameter, takes in a string
-            st.session_state.Options,
-            key ='rdkey5',
-            index = 0,
-        )
+        if not st.session_state.QuizEndActivated:
+            for num in range(5):
+                choiceContainer = st.empty()
+
+                multiplechoice = choiceContainer.radio( # This is basically the "multiple choice selection" contruct
+                    "What does this mean? "+ thelistoflanguages[st.session_state.questionlist[num]][int(lm)], # This is the question parameter, takes in a string
+                    st.session_state.Options,
+                    key='rdkey' + str(num),
+                    index = 0,
+            )
+            
+            st.session_state.containers.append(choiceContainer)
+
         if (st.button('Submit', disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
             if not st.session_state.QuizEndActivated:
                 st.session_state.QuizEndActivated = True
+                for num in range(5):
+                    if  st.session_state["rdkey" + str(num)] == thelistoflanguages[st.session_state.questionlist[num]][0]:
+                        st.session_state.correctcounter += 1
+                    else:
+                        st.session_state.wrongquestionlist.append(st.session_state.questionlist[num])
+                    num += 1
+
+                for container in st.session_state.containers:
+                    container.empty()
                 st.rerun()
 
-            if multiplechoice1 == thelistoflanguages[st.session_state.questionlist[0]][0]:
-                st.session_state.correctcounter += 1
-            else:
-                st.session_state.wrongquestionlist.append(st.session_state.questionlist[0])
-                
-            if multiplechoice2 == thelistoflanguages[st.session_state.questionlist[1]][0]:
-                st.session_state.correctcounter += 1
-            else:
-                st.session_state.wrongquestionlist.append(st.session_state.questionlist[1])
- 
-            if multiplechoice3 == thelistoflanguages[st.session_state.questionlist[2]][0]:
-                st.session_state.correctcounter += 1
-            else:
-                st.session_state.wrongquestionlist.append(st.session_state.questionlist[2])
-
-            if multiplechoice4 == thelistoflanguages[st.session_state.questionlist[3]][0]:
-                st.session_state.correctcounter += 1
-            else:
-                st.session_state.wrongquestionlist.append(st.session_state.questionlist[3])
-
-            if multiplechoice5 == thelistoflanguages[st.session_state.questionlist[4]][0]:
-                st.session_state.correctcounter += 1
-            else:
-                st.session_state.wrongquestionlist.append(st.session_state.questionlist[4])
-
-            choiceContainer1.empty()
-            choiceContainer2.empty()
-            choiceContainer3.empty()
-            choiceContainer4.empty()
-            choiceContainer5.empty()
-
             st.write("You scored " + str(st.session_state.correctcounter) + "/5")
+
             if not st.session_state.correctcounter == 5:
                 st.write("You got these questions wrong:")
+
             for wrongqnsindex in st.session_state.wrongquestionlist:
                 st.write(thelistoflanguages[wrongqnsindex][int(lm)] + " = " + thelistoflanguages[wrongqnsindex][0])
+
             if st.session_state.correctcounter == 5:
                 st.balloons()
+
             if st.button("Restart"):
                 st.session_state.ButtonActivated = False
                 st.session_state.QuizStartActivated = False
                 st.session_state.QuizEndActivated = False
 
+                st.session_state.containers = []
                 st.session_state.Options = []
                 st.session_state.questionlist = []
                 st.session_state.correctcounter = 0
