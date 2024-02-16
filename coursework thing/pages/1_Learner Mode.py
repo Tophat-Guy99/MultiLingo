@@ -32,9 +32,14 @@ st.set_page_config(
 )
 
 if "ButtonActivated" not in st.session_state:
+    st.session_state.counter = False
     st.session_state.ButtonActivated = False
     st.session_state.QuizStartActivated = False
     st.session_state.QuizEndActivated = False
+
+    st.session_state.ButtonActivated2 = False
+    st.session_state.QuizStartActivated2 = False
+    st.session_state.QuizEndActivated2 = False
 
     st.session_state.Options = []
     st.session_state.questionlist = []
@@ -43,6 +48,13 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.correctcounter = 0
     st.session_state.wrongquestionlist = []
         
+def callback():
+    if st.session_state.ButtonActivated2 == False:
+        st.session_state.ButtonActivated2 = True
+    elif st.session_state.QuizStartActivated2 == False:
+        st.session_state.QuizStartActivated2 = True
+    elif st.session_state.QuizEndActivated2 == False:
+        st.session_state.QuizEndActivated2 = True
 
 st.sidebar.header("Learner Mode") 
 st.sidebar.write("Learn The Language.")
@@ -52,17 +64,22 @@ lf = st.selectbox('What language do you want to learn today?',
                          ('French 🇫🇷', 'Chinese 🇨🇳', 'Spanish 🇪🇸'), disabled=st.session_state.ButtonActivated)
 lm = languagenumberreference[lf]
   
-if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or st.session_state.ButtonActivated):
+if (st.button("Start Learning", on_click = callback, disabled = st.session_state.counter) or st.session_state.ButtonActivated):
 
-    if not st.session_state.ButtonActivated:
-        st.session_state.ButtonActivated = True
 
-        samplerange = list(range(0, len(thelistoflanguages)))
-        st.session_state.questionlist = random.sample(samplerange, 5)
-        for i in range(5):
-            st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
+    if st.session_state.counter == False:
+        st.session_state.counter = True
+
+        if not st.session_state.ButtonActivated:
+            if st.session_state.counter:
+                st.session_state.ButtonActivated = True
+                samplerange = list(range(0, len(thelistoflanguages)))
+                st.session_state.questionlist = random.sample(samplerange, 5)
+                for i in range(5):
+                    st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
         st.rerun()
-    if (st.button("Start Quiz", disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
+
+    if (st.button("Start Quiz", on_click = callback, disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
         
         if not st.session_state.QuizStartActivated:
             st.session_state.QuizStartActivated = True
@@ -71,6 +88,7 @@ if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or 
             questionListIndexes = [0]
             questionRange = list(range(5))
             questionRange.remove(0)
+
             random.shuffle(questionRange)
             questionListIndexes.append(questionRange[0])
             questionListIndexes.append(questionRange[1])
@@ -115,7 +133,7 @@ if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or 
             key ='rdkey5',
             index = 0,
         )
-        if (st.button('Submit', disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
+        if (st.button('Submit', on_click = callback, disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
             if not st.session_state.QuizEndActivated:
                 st.session_state.QuizEndActivated = True
                 st.rerun()
@@ -157,7 +175,8 @@ if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or 
             choiceContainer5.empty()
 
             st.write("You scored " + str(st.session_state.correctcounter) + "/5 and currently have " + str(st.session_state.playerxp) + "XP in total")
-            st.write("You got these questions wrong")
+            if not st.session_state.correctcounter == 5:
+                st.write("You got these questions wrong")
             for wrongqnsindex in st.session_state.wrongquestionlist:
                 st.write(thelistoflanguages[wrongqnsindex][int(lm)] + " = " + thelistoflanguages[wrongqnsindex][0])
             if st.session_state.correctcounter == 5:
@@ -165,6 +184,7 @@ if (st.button("Start Learning", disabled = st.session_state.ButtonActivated) or 
 
             if st.button("Restart"):
                 st.session_state.ButtonActivated = False
+                st.session_state.counter = False
                 st.session_state.QuizStartActivated = False
                 st.session_state.QuizEndActivated = False
 
