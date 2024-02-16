@@ -37,24 +37,12 @@ if "ButtonActivated" not in st.session_state:
     st.session_state.QuizStartActivated = False
     st.session_state.QuizEndActivated = False
 
-    st.session_state.ButtonActivated2 = False
-    st.session_state.QuizStartActivated2 = False
-    st.session_state.QuizEndActivated2 = False
-
     st.session_state.Options = []
     st.session_state.questionlist = []
     st.session_state.bt_clkd = ""
     st.session_state.playerxp = 0
     st.session_state.correctcounter = 0
     st.session_state.wrongquestionlist = []
-        
-def callback():
-    if st.session_state.ButtonActivated2 == False:
-        st.session_state.ButtonActivated2 = True
-    elif st.session_state.QuizStartActivated2 == False:
-        st.session_state.QuizStartActivated2 = True
-    elif st.session_state.QuizEndActivated2 == False:
-        st.session_state.QuizEndActivated2 = True
 
 st.sidebar.header("Learner Mode") 
 st.sidebar.write("Learn The Language.")
@@ -64,7 +52,7 @@ lf = st.selectbox('What language do you want to learn today?',
                          ('French 🇫🇷', 'Chinese 🇨🇳', 'Spanish 🇪🇸'), disabled=st.session_state.ButtonActivated)
 lm = languagenumberreference[lf]
   
-if (st.button("Start Learning", on_click = callback, disabled = st.session_state.counter) or st.session_state.ButtonActivated):
+if (st.button("Start Learning", disabled = st.session_state.counter) or st.session_state.ButtonActivated):
 
 
     if st.session_state.counter == False:
@@ -79,7 +67,7 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
                     st.write(thelistoflanguages[st.session_state.questionlist[i]][int(lm)] + ": " + thelistoflanguages[st.session_state.questionlist[i]][0])
         st.rerun()
 
-    if (st.button("Start Quiz", on_click = callback, disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
+    if (st.button("Start Quiz", disabled = st.session_state.QuizStartActivated)or st.session_state.QuizStartActivated):
         
         if not st.session_state.QuizStartActivated:
             st.session_state.QuizStartActivated = True
@@ -133,7 +121,7 @@ if (st.button("Start Learning", on_click = callback, disabled = st.session_state
             key ='rdkey5',
             index = 0,
         )
-        if (st.button('Submit', on_click = callback, disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
+        if (st.button('Submit', disabled = st.session_state.QuizEndActivated) or st.session_state.QuizEndActivated):
             if not st.session_state.QuizEndActivated:
                 st.session_state.QuizEndActivated = True
                 st.rerun()
