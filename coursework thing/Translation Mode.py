@@ -17,7 +17,7 @@ st.set_page_config(
 st.sidebar.header("Translate Mode") 
 st.sidebar.write("Translate from language to language.")
 st.title("MultiLingo")
-st.write("Breaking the barriers of language.") 
+st.write("Breaking the barriers for language.") 
 
 # (Michael) Session state variable to prevent further interaction with the "text translate
 if 'texttranslationrunning' not in st.session_state:
