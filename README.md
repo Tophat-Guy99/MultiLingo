@@ -3,6 +3,7 @@ So there's like, a lot of stuff to install/import
 Note 1: This project is supported only on MacOS, and the installation steps will describe the setup for that operating system as such.
 Note 2: This project was designed with Python 3.11.5, hence it is heavily recommended that you use Python 3.11.5 to run this project.
 Note 3: As this project also uses TTS, you are encouraged to run this project with volume on.
+Note 4: Do not press the "rerun" button (or the R key) when the site is running, especially on the Learner Mode, as it interferes with the flow of the code.
 
 ## Libraries to install
 ### Homebrew
