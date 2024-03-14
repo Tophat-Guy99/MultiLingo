@@ -1,11 +1,6 @@
 # All of this is written by Michael
 
-# Encoded OpenAI API key to avoid auto-detection on Github
-encodedkey = ("73 6B 2D 61 39 30 37 43 78 4A 58 78 6B 78 4A 39 39 61 72 45 6D 38 31 54 33 42 6C 62 6B 46 4A 56 6C 4E 49 63 4E 4D 77 45 34 58 37 79 73 54 65 47 5A 69 35").split()
-# Decryption process
-decodedkey = ""
-for i in range(len(encodedkey)):
-    decodedkey += chr(int(encodedkey[i], 16))
+decodedkey = "" # Insert your OpenAI API key into this string for the translation LLM to function properly.
 
 # LLM libraries and setting up translation LLM
 from langchain_openai import OpenAI
