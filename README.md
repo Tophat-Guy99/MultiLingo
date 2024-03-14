@@ -11,7 +11,7 @@ Note 4: Do not press the "rerun" button (or the R key) when the site is running,
 
 Note 5 : If Homebrew is already installed, skip the Homebrew installation steps.
 
-Note 6: You need an OpenAI API key to run this project. To insert it, go to `TranslationFunctions.py`, 
+Note 6: You need an OpenAI API key to run this project. To insert it, open `TranslationFunctions.py`, go to Line 3, and insert your OpenAI API key there.
 
 ## Libraries to install
 ### Homebrew
